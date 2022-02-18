@@ -1,14 +1,13 @@
-
 /** @jsx jsx */
-import { jsx } from '@emotion/core';
+import { jsx } from "@emotion/core";
 import { PieChart } from "react-minimal-pie-chart";
 import { useSelector, useDispatch } from "react-redux";
-import { useTheme } from "emotion-theming";
+import { useTheme, ThemeProvider } from "emotion-theming";
 
 const Graph1 = () => {
   const dispatch = useDispatch();
   const counter = useSelector(state => state.counter);
-  
+
   const graph = [1, 2, 3];
 
   const theme = useTheme();
@@ -19,11 +18,11 @@ const Graph1 = () => {
         padding: 10,
         border: `20px solid ${theme.colors.danger}`,
         background: `${theme.colors.success}`,
-        fontSize: "x-large",
+        fontSize: "x-large"
       }}
     >
       <button
-        onClick={() => dispatch({ type: 'ADD_COUNTER', payload: 1 })}
+        onClick={() => dispatch({ type: "ADD_COUNTER", payload: 1 })}
         style={{ fontSize: "x-large" }}
       >
         Hi I'm the remote federated Child!
@@ -33,7 +32,7 @@ const Graph1 = () => {
         data={[
           { title: "One", value: graph[0], color: "#E38627" },
           { title: "Two", value: graph[1], color: "#C13C37" },
-          { title: "Three", value: graph[2], color: "#6A2135" },
+          { title: "Three", value: graph[2], color: "#6A2135" }
         ]}
         radius={PieChart.defaultProps.radius - 3}
         lineWidth={20}
@@ -43,4 +42,23 @@ const Graph1 = () => {
   );
 };
 
-export default Graph1;
+const Graph1Wrapper = () => {
+  const theme = useTheme();
+
+  return Object.keys(theme).length === 0 ? (
+    <ThemeProvider
+      theme={{
+        colors: {
+          danger: "red",
+          success: "green"
+        }
+      }}
+    >
+      <Graph1 />
+    </ThemeProvider>
+  ) : (
+    <Graph1 />
+  );
+};
+
+export default Graph1Wrapper;
